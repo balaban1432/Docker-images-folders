@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  veritabani:
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - verilerim:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 2464516578
+      MYSQL_USER: balaban
+      MYSQL_PASSWORD: balaban123
+      MYSQL_DATABASE: project
+    networks:
+      - balabannet 
+  wordpress:
+    image: wordpress:latest
+    depends_on:
+      - veritabani
+    restart: always
+    ports:
+      - "80:80"
+    environment:
+      WORDPRESS_DB_HOST: veritabani:3306
+      WORDPRESS_DB_USER: balaban
+      WORDPRESS_DB_PASSWORD: balaban123
+      WORDPRESS_DB_NAME: project        
+    networks:
+      - balabannet 
+      
+volumes:
+  verilerim:
+
+networks:
+  balabannet:
+    driver: bridge
