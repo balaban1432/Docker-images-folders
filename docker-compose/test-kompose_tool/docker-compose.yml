@@ -23,7 +23,11 @@ services:
     networks:
       - balabannet
     restart: always
-    container_name: server       
+    container_name: server
+    labels:
+      kompose.service.type: "nodeport"
+      kompose.service.nodeport.port: "30001"
+      kompose.service.expose: "www.deryabalaban.online"       
 
 networks:
   balabannet:
