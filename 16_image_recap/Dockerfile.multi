@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/java/jdk:8-zulu-alpine As birinci
 WORKDIR /usr/src/uygulama
-COPY source/ .
+COPY ./source .
 RUN javac uygulama.java
 
 FROM mcr.microsoft.com/java/jre:8-zulu-alpine
