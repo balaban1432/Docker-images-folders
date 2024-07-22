@@ -21,26 +21,30 @@ cursor = connection.cursor()
 # Create P table within sqlite db and populate with sample data
 # Execute the code below only once.
 def init_todo_db():
-    drop_table = 'DROP TABLE IF EXISTS todo_db.todos;'
-    todos_table = """
-    CREATE TABLE todo_db.todos(
-    task_id INT NOT NULL AUTO_INCREMENT,
-    title VARCHAR(100) NOT NULL,
-    description VARCHAR(200),
-    is_done BOOLEAN NOT NULL DEFAULT 0,
-    PRIMARY KEY (task_id)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-    """
-    data = """
-    INSERT INTO todo_db.todos (title, description, is_done)
-    VALUES
-        ("Project 2", "Work on project 2 with teammates", 1 ),
-        ("Cloudformation Documentation", "Study and learn how to read cloudformation docs", 0),
-        ("Work on CC Phonebook", "Solve python coding challenge about phonebook app", 0);
-    """
-    cursor.execute(drop_table)
-    cursor.execute(todos_table)
-    cursor.execute(data)
+    # Check if the 'todos' table exists
+    cursor.execute("SHOW TABLES LIKE 'todos';")
+    result = cursor.fetchone()
+
+    # If the 'todos' table does not exist, create it and populate with sample data
+    if not result:
+        todos_table = """
+        CREATE TABLE todo_db.todos(
+        task_id INT NOT NULL AUTO_INCREMENT,
+        title VARCHAR(100) NOT NULL,
+        description VARCHAR(200),
+        is_done BOOLEAN NOT NULL DEFAULT 0,
+        PRIMARY KEY (task_id)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        """
+        data = """
+        INSERT INTO todo_db.todos (title, description, is_done)
+        VALUES
+            ("Project 2", "Work on project 2 with teammates", 1 ),
+            ("Cloudformation Documentation", "Study and learn how to read cloudformation docs", 0),
+            ("Work on CC Phonebook", "Solve python coding challenge about phonebook app", 0);
+        """
+        cursor.execute(todos_table)
+        cursor.execute(data)
 
 # Write a function named `get_all_tasks` which gets all tasks from the todos table in the db,
 # and return result as list of dictionary 
